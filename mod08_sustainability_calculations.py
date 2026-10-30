@@ -2,19 +2,13 @@ import pandas as pd
 
 POWER_PER_CORE_KW = 0.05  # 50W per CPU core
 
-
 def compute_energy_kwh(jobs_df, power_per_core_kw=POWER_PER_CORE_KW):
     """
     Adds a column 'energy_kwh' to the jobs dataframe.
     """
     df = jobs_df.copy()
-    df["energy_kwh"] = ( 
-        df["cpu_cores"] * df["runtime_hours"] * power_per_core_kw
-        # put energy calculation here
-
-    )
+    df["energy_kwh"] = df["cpu_cores"] * df["runtime_hours"] * power_per_core_kw
     return df
-
 
 def compute_emissions(jobs_df, carbon_intensity):
     """
@@ -27,7 +21,6 @@ def compute_emissions(jobs_df, carbon_intensity):
     total_energy = jobs_df["energy_kwh"].sum()
     return total_energy * carbon_intensity
 
-
 def emissions_by_region(jobs_df, carbon_intensity_dict):
     """
     Returns a dictionary mapping region -> total emissions.
@@ -36,7 +29,6 @@ def emissions_by_region(jobs_df, carbon_intensity_dict):
     for region, intensity in carbon_intensity_dict.items():
         results[region] = compute_emissions(jobs_df, intensity)
     return results
-
 
 def compute_total_runtime(jobs_df, max_cores):
     """
@@ -62,6 +54,3 @@ def compute_total_runtime(jobs_df, max_cores):
         total_time += batch_time
         remaining_jobs = next_remaining
     return total_time
-
-
-
